@@ -13,9 +13,9 @@ namespace sharp_websocketcp.Handler
     {
         private bool tcpServerConnected = false;
 
-        private readonly int tcpServerPort = 6666;
+        internal int tcpServerPort { get; set; } = 6666;
 
-        private readonly string tcpServerIp = "127.0.0.1";
+        internal string tcpServerIp { get; set; } = "127.0.0.1";
 
         private TcpClient tcpClient;
 

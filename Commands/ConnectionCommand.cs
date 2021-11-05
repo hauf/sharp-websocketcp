@@ -4,6 +4,7 @@ using CliFx.Infrastructure;
 using sharp_websocketcp.Handler;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using WebSocketSharp.Server;
@@ -24,7 +25,7 @@ namespace sharp_websocketcp.Commands
         {
             var wssv = new WebSocketServer($"ws://{this.LocalAddress}");
 
-            wssv.AddWebSocketService<TcpServerHandler>($"/tcpserver");
+            wssv.AddWebSocketService<TcpServerHandler>($"/tcpserver", this.TcpServerHandlerInitializer);
 
             wssv.Start();
 
@@ -35,6 +36,15 @@ namespace sharp_websocketcp.Commands
             wssv.Stop();
 
             return default;
+        }
+
+        private void TcpServerHandlerInitializer(TcpServerHandler handler)
+        {
+            var address = this.RemoteAddress.Split(':');
+
+            handler.tcpServerIp = address[0];
+
+            handler.tcpServerPort = int.Parse(address[1]);
         }
     }
 }
